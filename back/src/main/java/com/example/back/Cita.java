@@ -1,0 +1,39 @@
+package com.example.back;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Entity
+@Table(name = "citas")
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+public class Cita {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    
+    @ManyToOne
+    @JoinColumn(name = "usuario_id", referencedColumnName = "id")
+    private Usuario usuario;
+    
+    @ManyToOne
+    @JoinColumn(name = "barbero_id", referencedColumnName = "id")
+    private Barbero barbero;
+
+    @ManyToOne
+    @JoinColumn(name = "servicio_id", referencedColumnName = "id")
+    private Servicio servicio;
+
+    private String fechaHora; // Formato: "YYYY-MM-DD HH:MM"
+    private EnumEstadoCita estadoCita; 
+
+}
