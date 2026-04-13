@@ -23,7 +23,7 @@ public class Cita {
     
     @ManyToOne
     @JoinColumn(name = "usuario_id", referencedColumnName = "id")
-    private Usuario usuario;
+    private Cliente usuario;
     
     @ManyToOne
     @JoinColumn(name = "barbero_id", referencedColumnName = "id")

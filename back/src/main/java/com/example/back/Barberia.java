@@ -9,17 +9,18 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
-@Table(name = "usuarios")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class Usuario {
+@Entity
+@Table(name = "barberias")
+public class Barberia {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private int id;
+
+
+    private Barbero barbero;
+    private String ubicacion;
     
-    private String nombre;
-    private String email;
-    private String contrasena;
 }
