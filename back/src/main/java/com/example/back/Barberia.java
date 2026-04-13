@@ -22,5 +22,6 @@ public class Barberia {
 
     private Barbero barbero;
     private String ubicacion;
+    private String localidad; //temporal por ahora
     
 }
