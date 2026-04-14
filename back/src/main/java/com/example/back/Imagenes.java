@@ -18,6 +18,9 @@ public class Imagenes {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    private Integer barberiaId;
+
     private String url;
-    private Integer barberoId;
+
 }

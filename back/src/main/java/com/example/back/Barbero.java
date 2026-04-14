@@ -21,5 +21,6 @@ public class Barbero {
     private String nombre;
     private String email;
     private String contrasena;
+    private String img;
 }
 

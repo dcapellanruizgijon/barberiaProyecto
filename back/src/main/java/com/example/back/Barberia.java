@@ -17,11 +17,11 @@ import lombok.NoArgsConstructor;
 public class Barberia {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
-
-    private Barbero barbero;
+    private Integer barberoId;
     private String ubicacion;
     private String localidad; //temporal por ahora
     // private Integer valoracionMedia;
+    
 }
