@@ -22,4 +22,5 @@ public class Cliente {
     private String nombre;
     private String email;
     private String contrasena;
+    private String fotoPerfil;
 }
