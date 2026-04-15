@@ -19,9 +19,9 @@ public class Barberia {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Integer barberoId;
+    private String nombre;
+    private Long barberoId;
     private String ubicacion;
     private String localidad; //temporal por ahora
-    // private Integer valoracionMedia;
-    
+    private String telefono;
 }
