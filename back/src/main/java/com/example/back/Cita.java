@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 public class Cita {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
     
     @ManyToOne
     @JoinColumn(name = "usuario_id", referencedColumnName = "id")

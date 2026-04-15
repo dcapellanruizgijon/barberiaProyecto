@@ -4,6 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.example.back.Barberia;
 
-public interface barberiaRepositorio extends JpaRepository<Barberia, Integer>{
+public interface barberiaRepositorio extends JpaRepository<Barberia, Long>{
     
 }

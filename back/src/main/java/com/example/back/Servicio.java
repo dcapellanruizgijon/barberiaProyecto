@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 public class Servicio {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
     private String nombre;
     private double precio;
     private Integer duracion; // Duración en minutos

@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 public class Barberia {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     private Integer barberoId;
     private String ubicacion;

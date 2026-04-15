@@ -2,10 +2,10 @@ package com.example.back;
 
 public class Resenas {
     
-    private Integer id;
-    private Integer id_usuario;
-    private Integer id_barberia;
-    private long comentario;
+    private Long id;
+    private Long id_usuario;
+    private Long id_barberia;
+    private String comentario;
     private Integer puntuacion;
     
     //Si nos columpiamos mucho

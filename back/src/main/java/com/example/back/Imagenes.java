@@ -17,9 +17,9 @@ import lombok.NoArgsConstructor;
 public class Imagenes {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
-    private Integer barberiaId;
+    private Long barberiaId;
 
     private String url;
 
