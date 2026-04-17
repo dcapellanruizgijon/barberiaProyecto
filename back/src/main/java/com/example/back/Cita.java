@@ -22,16 +22,16 @@ public class Cita {
     private Long id;
     
     @ManyToOne
-    @JoinColumn(name = "usuario_id", referencedColumnName = "id")
-    private Long usuarioId;
+    @JoinColumn(name = "cliente_id", referencedColumnName = "id")
+    private Cliente clienteId;
     
     @ManyToOne
     @JoinColumn(name = "barbero_id", referencedColumnName = "id")
-    private Long barberoId;
+    private Barbero barberoId;
 
     @ManyToOne
     @JoinColumn(name = "servicio_id", referencedColumnName = "id")
-    private Long servicioId;
+    private Servicio servicioId;
 
     private String fechaHora; // Formato: "YYYY-MM-DD HH:MM"
     private EnumEstadoCita estadoCita; 

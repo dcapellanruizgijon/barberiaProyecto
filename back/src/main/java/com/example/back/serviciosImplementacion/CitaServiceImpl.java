@@ -28,7 +28,7 @@ public class CitaServiceImpl implements CitaService {
 
     @Override
     public List<Cita> obtenerPorBarbero(Long barberoId) {
-        return repository.findByBarberoId(barberoId);
+        return repository.findByBarberoId_Id(barberoId);
     }
 
     @Override
