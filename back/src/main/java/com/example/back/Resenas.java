@@ -1,5 +1,6 @@
 package com.example.back;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,8 +19,10 @@ public class Resenas {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long id_usuario;
-    private Long id_barberia;
+    @Column(name = "id_usuario")
+    private Long idUsuario;
+    @Column(name = "id_barberia")
+    private Long idBarberia;
     private String comentario;
     private Integer puntuacion;
     

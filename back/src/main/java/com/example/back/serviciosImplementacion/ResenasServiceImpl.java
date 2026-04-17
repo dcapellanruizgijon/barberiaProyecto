@@ -23,8 +23,8 @@ public class ResenasServiceImpl implements ResenasService {
     @Override
     public List<Resenas> buscarPorBarberia(Long idBarberia) {
         // Nota: El nombre del método en el repositorio debe coincidir con el campo "id_barberia"
-        // Si el campo se llama id_barberia, JPA busca findById_barberia o similar.
-        return repository.findById_Barberia(idBarberia);
+        // Si el campo se llama id_barberia, JPA busca findByIdBarberia.
+        return repository.findByIdBarberia(idBarberia);
     }
 
     @Override
