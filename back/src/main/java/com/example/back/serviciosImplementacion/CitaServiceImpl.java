@@ -1,4 +1,4 @@
-package com.example.back.servicios;
+package com.example.back.serviciosImplementacion;
 
 import java.util.List;
 
@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.example.back.Cita;
 import com.example.back.EnumEstadoCita;
 import com.example.back.repositorios.CitaRepositorio;
+import com.example.back.servicios.CitaService;
 
 @Service
 public class CitaServiceImpl implements CitaService {

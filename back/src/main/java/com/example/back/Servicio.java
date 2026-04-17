@@ -20,5 +20,5 @@ public class Servicio {
     private Long id;
     private String nombre;
     private double precio;
-    private Integer duracion; // Duración en minutos
+    private Integer duracion; // Duración en minutos.
 }

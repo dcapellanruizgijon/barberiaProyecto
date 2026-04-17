@@ -1,0 +1,49 @@
+package com.example.back.controladores;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.back.Barbero;
+import com.example.back.servicios.BarberoService;
+
+@RestController
+@RequestMapping("/api/barberos")
+@CrossOrigin(origins = "http://localhost:4200")
+public class BarberoController {
+
+    @Autowired
+    private BarberoService service;
+
+    // GET: Listar todos los barberos
+    @GetMapping
+    public List<Barbero> listar() {
+        return service.obtenerTodos();
+    }
+
+    // GET: Obtener un barbero específico por ID
+    @GetMapping("/{id}")
+    public Barbero buscar(@PathVariable Long id) {
+        return service.obtenerPorId(id);
+    }
+
+    // POST: Crear o actualizar un barbero
+    @PostMapping
+    public Barbero crear(@RequestBody Barbero barbero) {
+        return service.guardar(barbero);
+    }
+
+    // DELETE: Eliminar un barbero
+    @DeleteMapping("/{id}")
+    public void eliminar(@PathVariable Long id) {
+        service.eliminar(id);
+    }
+}
