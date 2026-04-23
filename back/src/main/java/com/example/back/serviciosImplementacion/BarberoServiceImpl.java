@@ -34,6 +34,11 @@ public class BarberoServiceImpl implements BarberoService {
         repository.deleteById(id);
     }
 
+    @Override
+    public List<Barbero> obtenerPorBarberiaId(Long barberiaId) {
+        return repository.findByBarberiaId(barberiaId);
+    }
+
     // @Override
     // public Barbero guardar(Barbero barbero) {
     //     // TODO Auto-generated method stub

@@ -10,4 +10,5 @@ public interface BarberoService {
     Barbero guardar(Barbero barbero);
     void eliminar(Long id);
     // Podrías añadir un método para validar credenciales (login)
+    List<Barbero> obtenerPorBarberiaId(Long barberiaId);
 }

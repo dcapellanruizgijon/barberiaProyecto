@@ -24,4 +24,6 @@ public class Barberia {
     private String ubicacion;
     private String localidad; //temporal por ahora
     private String telefono;
+    private String logo;
+    private String header;
 }

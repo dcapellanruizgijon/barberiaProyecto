@@ -18,9 +18,11 @@ public class Barbero {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String nombre;
     private String email;
     private String contrasena;
     private String img;
+    private Long barberiaId;
 }
 
