@@ -21,7 +21,7 @@ public class SecurityConfig {
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .csrf(csrf -> csrf.disable()) // Desactiva CSRF para que Postman pueda hacer POST
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/fotos/**", "/api/barberias/**").permitAll() // /api/barberias para pruebas
+                .requestMatchers("/fotos/**", "/api/barberias/**", "/api/servicios/**").permitAll() // /api/barberias para pruebas
                 .anyRequest().authenticated()            // Todo lo demás sigue protegido
             );
         

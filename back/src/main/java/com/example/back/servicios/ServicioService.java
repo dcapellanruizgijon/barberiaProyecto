@@ -8,4 +8,5 @@ public interface ServicioService {
     List<Servicio> listarTodos();
     Servicio guardar(Servicio servicio);
     void eliminar(Long id);
+    List<Servicio> getServiciosByBarberiaId(Long barberiaId);
 }

@@ -30,6 +30,11 @@ public class ServicioServiceImpl implements ServicioService {
         repository.deleteById(id);
     }
 
+    @Override
+    public List<Servicio> getServiciosByBarberiaId(Long barberiaId) {
+        return repository.findByBarberia_Id(barberiaId);
+    }
+
     // @Override
     // public Servicio guardar(Servicio servicio) {
     //     // TODO Auto-generated method stub

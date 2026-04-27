@@ -33,6 +33,11 @@ public class ServicioController {
         return service.guardar(servicio);
     }
 
+    @GetMapping("/barberia/{barberiaId}")
+    public List<Servicio> getServiciosByBarberia(@PathVariable Long barberiaId) {
+        return service.getServiciosByBarberiaId(barberiaId);
+    }
+
     @DeleteMapping("/{id}")
     public void eliminar(@PathVariable Long id) {
         service.eliminar(id);
