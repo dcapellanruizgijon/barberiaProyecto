@@ -26,6 +26,7 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
             .requestMatchers("/api/clientes/**").permitAll()
             .requestMatchers("/api/barberias/**").permitAll()
             .requestMatchers("/api/barberos/**").permitAll()
+            .requestMatchers("/api/servicios/**").permitAll()
             .requestMatchers("/fotos/**").permitAll()
             
             // El resto sigue protegido
