@@ -15,18 +15,26 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-            .csrf(csrf -> csrf.disable()) // Desactiva CSRF para que Postman pueda hacer POST
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/fotos/**", "/api/barberias/**", "/api/servicios/**", "/api/barberos/**").permitAll() // /api/barberias para pruebas
-                .anyRequest().authenticated()            // Todo lo demás sigue protegido
-            );
-        
-        return http.build();
-    }
+ @Bean
+public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    http
+        .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+        .csrf(csrf -> csrf.disable()) // Importante para poder hacer POST desde Postman
+        .authorizeHttpRequests(auth -> auth
+            // Añade estas líneas para liberar tus APIs
+            .requestMatchers("/api/imagenes/**").permitAll() 
+            .requestMatchers("/api/clientes/**").permitAll()
+            .requestMatchers("/api/barberias/**").permitAll()
+            .requestMatchers("/api/barberos/**").permitAll()
+            .requestMatchers("/fotos/**").permitAll()
+            
+            // El resto sigue protegido
+            .anyRequest().authenticated()
+        );
+    
+    return http.build();
+}
+
     
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
