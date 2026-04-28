@@ -46,4 +46,10 @@ public class BarberoController {
     public void eliminar(@PathVariable Long id) {
         service.eliminar(id);
     }
+
+    // GET: Obtener barberos por barberiaId
+    @GetMapping("/barberia/{barberiaId}")
+    public List<Barbero> getBarberosByBarberia(@PathVariable Long barberiaId) {
+        return service.obtenerPorBarberiaId(barberiaId);
+    }
 }
