@@ -39,6 +39,17 @@ public class BarberoServiceImpl implements BarberoService {
         return repository.findByBarberiaId(barberiaId);
     }
 
+    @Override
+    public Barbero login(String email, String contrasena) {
+        List<Barbero> barberos = repository.findAll();
+        for (Barbero barbero : barberos) {
+            if (barbero.getEmail().equals(email) && barbero.getContrasena().equals(contrasena)) {
+                return barbero; 
+            } 
+        }
+        return null;
+    }
+
     // @Override
     // public Barbero guardar(Barbero barbero) {
     //     // TODO Auto-generated method stub

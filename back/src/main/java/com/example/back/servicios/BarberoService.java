@@ -11,4 +11,5 @@ public interface BarberoService {
     void eliminar(Long id);
     // Podrías añadir un método para validar credenciales (login)
     List<Barbero> obtenerPorBarberiaId(Long barberiaId);
+    Barbero login(String email, String contrasena);
 }

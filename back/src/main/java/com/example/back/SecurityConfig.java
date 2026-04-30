@@ -15,27 +15,29 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableWebSecurity
 public class SecurityConfig {
 
- @Bean
-public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    http
-        .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-        .csrf(csrf -> csrf.disable()) // Importante para poder hacer POST desde Postman
-        .authorizeHttpRequests(auth -> auth
-            // Añade estas líneas para liberar tus APIs
-            .requestMatchers("/api/imagenes/**").permitAll() 
-            .requestMatchers("/api/clientes/**").permitAll()
-            .requestMatchers("/api/barberias/**").permitAll()
-            .requestMatchers("/api/barberos/**").permitAll()
-            .requestMatchers("/api/servicios/**").permitAll()
-            .requestMatchers("/fotos/**").permitAll()
-            
-            // El resto sigue protegido
-            .anyRequest().authenticated()
-        );
-    
-    return http.build();
-}
-
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+            .csrf(csrf -> csrf.disable())
+            .authorizeHttpRequests(auth -> auth
+                // 🔹 IMPORTANTE: Las reglas específicas van PRIMERO
+                .requestMatchers(
+                    "/api/imagenes/**",
+                    "/api/clientes/**",
+                    "/api/barberias/**",
+                    "/api/barberos/**",
+                    "/api/servicios/**",
+                    "/fotos/**",
+                    "/api/barberos/login/**",      
+                    "/api/clientes/login/**"       
+                ).permitAll()
+                //CUALQUIER otra petición necesita autenticación
+                .anyRequest().authenticated()
+            );
+        
+        return http.build();
+    }
     
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {

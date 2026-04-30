@@ -1,6 +1,7 @@
 package com.example.back.controladores;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -78,15 +79,18 @@ public class ClienteController {
     }
 
     // Login de cliente
-    @PostMapping("/login")
-    public ResponseEntity<Cliente> login(@RequestParam String email, @RequestParam String contrasena) {
-        Cliente cliente = clienteService.login(email, contrasena);
-        if (cliente != null) {
-            return ResponseEntity.ok(cliente);
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
+    // En ClienteController.java - Cambia el login a @RequestBody
+@PostMapping("/login")
+public ResponseEntity<Cliente> login(@RequestBody Map<String, String> credentials) {
+    String email = credentials.get("email");
+    String contrasena = credentials.get("contrasena");
+    Cliente cliente = clienteService.login(email, contrasena);
+    if (cliente != null) {
+        return ResponseEntity.ok(cliente);
+    } else {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
+}
 
     // Obtener cliente por email (para recuperar contraseña)
     @GetMapping("/email/{email}")
