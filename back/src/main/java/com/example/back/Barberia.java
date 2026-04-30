@@ -26,4 +26,7 @@ public class Barberia {
     private String telefono;
     private String logo;
     private String header;
+    private Double latitud;
+    private Double longitud;
+
 }

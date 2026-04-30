@@ -5,7 +5,17 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.example.back.Barberia;
 import com.example.back.servicios.BarberiaService;
@@ -72,7 +82,7 @@ public class BarberiaController {
         if (existingBarberia == null) {
             return ResponseEntity.notFound().build();
         }
-        
+
         // Actualizar solo los campos que vienen en la petición
         if (barberia.getNombre() != null) {
             existingBarberia.setNombre(barberia.getNombre());
@@ -86,7 +96,13 @@ public class BarberiaController {
         if (barberia.getTelefono() != null) {
             existingBarberia.setTelefono(barberia.getTelefono());
         }
-        
+        // AÑADIR LOS NUEVOS CAMPOS NUMÉRICOS
+        if (barberia.getLatitud() != null) {
+            existingBarberia.setLatitud(barberia.getLatitud());
+        }
+        if (barberia.getLongitud() != null) {
+            existingBarberia.setLongitud(barberia.getLongitud());
+        }
         Barberia barberiaActualizada = barberiaService.actualizarBarberia(id, existingBarberia);
         return ResponseEntity.ok(barberiaActualizada);
     }
