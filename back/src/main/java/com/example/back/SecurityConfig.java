@@ -15,30 +15,25 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-            .csrf(csrf -> csrf.disable())
-            .authorizeHttpRequests(auth -> auth
-                // 🔹 IMPORTANTE: Las reglas específicas van PRIMERO
-                .requestMatchers(
-                    "/api/imagenes/**",
-                    "/api/clientes/**",
-                    "/api/barberias/**",
-                    "/api/barberos/**",
-                    "/api/servicios/**",
-                    "/api/citas/**",
-                    "/fotos/**",
-                    "/api/barberos/login/**",      
-                    "/api/clientes/login/**"       
-                ).permitAll()
-                //CUALQUIER otra petición necesita autenticación
-                .anyRequest().authenticated()
-            );
-        
-        return http.build();
-    }
+@Bean
+public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    http
+        .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+        .csrf(csrf -> csrf.disable())
+        // 🔹 IMPORTANTE: Esto asegura que no se pida login para estas rutas
+        .authorizeHttpRequests(auth -> auth
+            .requestMatchers("/api/citas/**").permitAll() // 👈 Debe ser la primera
+            .requestMatchers("/api/imagenes/**", "/api/clientes/**", "/api/barberias/**", "/api/barberos/**").permitAll()
+            .requestMatchers("/api/servicios/**", "/fotos/**", "/api/barberos/login/**", "/api/clientes/login/**").permitAll()
+            .anyRequest().authenticated()
+        )
+        // 🔹 DESACTIVA estas tres líneas para evitar el 403 preventivo
+        .httpBasic(basic -> basic.disable())
+        .formLogin(form -> form.disable())
+        .logout(logout -> logout.disable());
+    
+    return http.build();
+}
     
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {

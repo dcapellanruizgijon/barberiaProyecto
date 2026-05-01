@@ -44,7 +44,8 @@ public class Cita {
     @Column(nullable = false)
     private String fechaHora; // Formato: "YYYY-MM-DD HH:MM"
 
-    @Enumerated(EnumType.STRING) // Importante para que en la DB se guarde el texto (PENDIENTE, OK)
-    private EnumEstadoCita estadoCita;
+   @Enumerated(EnumType.STRING) // 👈 ESTO ES VITAL
+@Column(name = "estado_cita")
+private EnumEstadoCita estadoCita;
 
 }
