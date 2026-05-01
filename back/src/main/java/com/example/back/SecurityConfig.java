@@ -28,6 +28,7 @@ public class SecurityConfig {
                     "/api/barberias/**",
                     "/api/barberos/**",
                     "/api/servicios/**",
+                    "/api/citas/**",
                     "/fotos/**",
                     "/api/barberos/login/**",      
                     "/api/clientes/login/**"       
