@@ -49,14 +49,19 @@ public class BarberiaImplementacion implements BarberiaService{
         repo.deleteById(id);    
     }
 
-    @Override
-    public List<Barberia> getBarberiaByNombre(String nombre) {
-        List<Barberia> barberias = repo.findAll();
-        return barberias.stream()
-                .filter(b -> b.getNombre().toLowerCase().contains(nombre.toLowerCase()))
-                .toList();
-    }
-
+    // @Override
+    // public List<Barberia> getBarberiaByNombre(String nombre) {
+    //     List<Barberia> barberias = repo.findAll();
+    //     return barberias.stream()
+    //             .filter(b -> b.getNombre().toLowerCase().contains(nombre.toLowerCase()))
+    //             .toList();
+    // }
+@Override
+public List<Barberia> getBarberiaByNombre(String termino) {
+    // La base de datos se encarga de mirar en AMBAS columnas
+    // gracias al OR que pusimos en el Repository.
+    return repo.buscarPorNombreOLocalidad(termino);
+}
     // Para cuando tengamos el servicio de la clase Resenas
     // @Override
     // public List<Barberia> getBarberiasByValoracionMedia(Double valoracionMedia) {
