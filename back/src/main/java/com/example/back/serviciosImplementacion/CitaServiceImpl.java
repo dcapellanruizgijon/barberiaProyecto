@@ -28,7 +28,7 @@ public class CitaServiceImpl implements CitaService {
 
     @Override
     public List<Cita> obtenerPorBarbero(Long barberoId) {
-        return repository.findByBarberoId_Id(barberoId);
+        return repository.findByBarberoId(barberoId);
     }
 
     @Override
@@ -49,6 +49,11 @@ public class CitaServiceImpl implements CitaService {
         repository.deleteById(id);
     }
 
+    @Override
+    public List<Cita> obtenerOcupadas(Long barberiaId, String fecha) {
+        // Usamos el repositorio para filtrar por barbería y por el inicio de la fecha (YYYY-MM-DD)
+        return repository.findByBarberiaIdAndFechaHoraStartingWith(barberiaId, fecha);
+    }
     // @Override
     // public Cita agendarCita(Cita cita) {
     //     // TODO Auto-generated method stub

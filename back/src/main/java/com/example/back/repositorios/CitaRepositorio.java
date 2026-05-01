@@ -7,10 +7,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.example.back.Cita;
 
 
-public interface CitaRepositorio extends JpaRepository<Cita, Long>{
-    // Buscar citas por barbero para ver su agenda
-    List<Cita> findByBarberoId_Id(Long barberoId);
+public interface CitaRepositorio extends JpaRepository<Cita, Long> {
     
-    // Buscar citas por cliente para su historial
-    List<Cita> findByClienteId_Id(Long clienteId);
+    // Busca las citas de una barbería en un día específico
+    // fechaHora formateada como "YYYY-MM-DD"
+    List<Cita> findByBarberiaIdAndFechaHoraStartingWith(Long barberiaId, String fecha);
+
+    // El que ya tenías pero corregido (sin el _Id si cambiaste el nombre de la variable)
+    List<Cita> findByBarberoId(Long barberoId);
 }

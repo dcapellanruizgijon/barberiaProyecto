@@ -12,4 +12,5 @@ public interface CitaService {
     Cita agendarCita(Cita cita);
     Cita actualizarEstado(Long id, EnumEstadoCita estado);
     void cancelarCita(Long id);
+    List<Cita> obtenerOcupadas(Long barberiaId, String fecha);
 }

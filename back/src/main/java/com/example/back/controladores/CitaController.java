@@ -56,4 +56,11 @@ public class CitaController {
     public void eliminar(@PathVariable Long id) {
         service.cancelarCita(id);
     }
+
+    @GetMapping("/ocupadas")
+    public List<Cita> obtenerOcupadas(
+            @RequestParam Long barberiaId,
+            @RequestParam String fecha) {
+        return service.obtenerOcupadas(barberiaId, fecha);
+    }
 }

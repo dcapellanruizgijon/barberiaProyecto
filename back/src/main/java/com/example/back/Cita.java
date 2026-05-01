@@ -1,6 +1,9 @@
 package com.example.back;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -17,14 +20,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class Cita {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
     @ManyToOne
-    @JoinColumn(name = "cliente_id", referencedColumnName = "id")
-    private Cliente clienteId;
-    
+    @JoinColumn(name = "cliente_id", nullable = false)
+    private Cliente cliente; // Quitamos el "Id" del nombre de la variable
+
+    @ManyToOne
+    @JoinColumn(name = "barberia_id", nullable = false)
+    private Barberia barberia; // <--- ESTO ES LO QUE TE FALTABA
+
     @ManyToOne
     @JoinColumn(name = "barbero_id", referencedColumnName = "id")
     private Barbero barberoId;
@@ -33,7 +41,10 @@ public class Cita {
     @JoinColumn(name = "servicio_id", referencedColumnName = "id")
     private Servicio servicioId;
 
+    @Column(nullable = false)
     private String fechaHora; // Formato: "YYYY-MM-DD HH:MM"
-    private EnumEstadoCita estadoCita; 
+
+    @Enumerated(EnumType.STRING) // Importante para que en la DB se guarde el texto (PENDIENTE, OK)
+    private EnumEstadoCita estadoCita;
 
 }
