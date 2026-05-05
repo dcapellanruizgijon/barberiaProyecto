@@ -74,4 +74,9 @@ public class CitaController {
     public List<Cita> obtenerOcupadas(@RequestParam Long barberiaId, @RequestParam String fecha) {
         return service.obtenerOcupadas(barberiaId, fecha);
     }
+    @GetMapping("/barberia/{barberiaId}")
+public List<Cita> listarPorBarberia(@PathVariable Long barberiaId) {
+    System.out.println("Cargando citas para la barbería: " + barberiaId);
+    return service.obtenerPorBarberia(barberiaId); // Usa el método que ya tienes en el Service
+}
 }

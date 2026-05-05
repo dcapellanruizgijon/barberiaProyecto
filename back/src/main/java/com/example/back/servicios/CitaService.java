@@ -14,4 +14,5 @@ public interface CitaService {
     void cancelarCita(Long id);
     List<Cita> obtenerOcupadas(Long barberiaId, String fecha);
     List<Cita> obtenerPorCliente(Long clienteId);
+    List<Cita> obtenerPorBarberia(Long barberiaId);
 }

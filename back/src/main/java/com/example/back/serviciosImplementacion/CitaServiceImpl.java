@@ -59,6 +59,11 @@ public class CitaServiceImpl implements CitaService {
     public List<Cita> obtenerPorCliente(Long clienteId) {
         return repository.findByClienteId(clienteId); 
     }
+    @Override
+public List<Cita> obtenerPorBarberia(Long barberiaId) {
+    // IMPORTANTE: Asegúrate de que findByBarberiaId exista en tu CitaRepositorio
+    return repository.findByBarberiaId(barberiaId);
+}
     // @Override
     // public Cita agendarCita(Cita cita) {
     //     // TODO Auto-generated method stub
