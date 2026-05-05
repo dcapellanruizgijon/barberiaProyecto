@@ -15,4 +15,6 @@ public interface CitaRepositorio extends JpaRepository<Cita, Long> {
 
     // El que ya tenías pero corregido (sin el _Id si cambiaste el nombre de la variable)
     List<Cita> findByBarberoId(Long barberoId);
+
+    List<Cita> findByClienteId(Long clienteId);
 }

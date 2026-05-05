@@ -54,6 +54,11 @@ public class CitaServiceImpl implements CitaService {
         // Usamos el repositorio para filtrar por barbería y por el inicio de la fecha (YYYY-MM-DD)
         return repository.findByBarberiaIdAndFechaHoraStartingWith(barberiaId, fecha);
     }
+
+    @Override
+    public List<Cita> obtenerPorCliente(Long clienteId) {
+        return repository.findByClienteId(clienteId); 
+    }
     // @Override
     // public Cita agendarCita(Cita cita) {
     //     // TODO Auto-generated method stub

@@ -63,4 +63,10 @@ public class CitaController {
             @RequestParam String fecha) {
         return service.obtenerOcupadas(barberiaId, fecha);
     }
+
+
+    @GetMapping("/cliente/{clienteId}")
+    public List<Cita> listarPorCliente(@PathVariable Long clienteId) {
+        return service.obtenerPorCliente(clienteId);
+    }
 }
