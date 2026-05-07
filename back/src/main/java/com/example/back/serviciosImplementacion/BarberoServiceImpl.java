@@ -1,7 +1,9 @@
 package com.example.back.serviciosImplementacion;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder; // ✅ AÑADIR
 import org.springframework.stereotype.Service;
 
 import com.example.back.Barbero;
@@ -13,6 +15,9 @@ public class BarberoServiceImpl implements BarberoService {
 
     @Autowired
     private BarberoRepositorio repository;
+    
+    @Autowired
+    private PasswordEncoder passwordEncoder; 
 
     @Override
     public List<Barbero> obtenerTodos() {
@@ -26,6 +31,11 @@ public class BarberoServiceImpl implements BarberoService {
 
     @Override
     public Barbero guardar(Barbero barbero) {
+        // ✅ HASHEAR LA CONTRASEÑA ANTES DE GUARDAR
+        if (barbero.getContrasena() != null && !barbero.getContrasena().startsWith("$2a$")) {
+            String contrasenaHasheada = passwordEncoder.encode(barbero.getContrasena());
+            barbero.setContrasena(contrasenaHasheada);
+        }
         return repository.save(barbero);
     }
 
@@ -40,19 +50,15 @@ public class BarberoServiceImpl implements BarberoService {
     }
 
     @Override
-    public Barbero login(String email, String contrasena) {
-        List<Barbero> barberos = repository.findAll();
-        for (Barbero barbero : barberos) {
-            if (barbero.getEmail().equals(email) && barbero.getContrasena().equals(contrasena)) {
-                return barbero; 
-            } 
+    public Barbero login(String email, String contrasenaPlana) { 
+        
+        //  Buscar por email directamente (más eficiente que findAll)
+        Barbero barbero = repository.findByEmail(email);
+        
+        if (barbero != null && passwordEncoder.matches(contrasenaPlana, barbero.getContrasena())) {
+            return barbero;
         }
+        
         return null;
     }
-
-    // @Override
-    // public Barbero guardar(Barbero barbero) {
-    //     // TODO Auto-generated method stub
-    //     throw new UnsupportedOperationException("Unimplemented method 'guardar'");
-    // }
 }

@@ -3,6 +3,7 @@ package com.example.back.serviciosImplementacion;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.back.Cliente;
@@ -14,6 +15,9 @@ public class ClienteImplementacion implements ClienteService {
 
     @Autowired
     private ClienteRepositorio repo;
+    
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public List<Cliente> getAllClientes() {
@@ -27,39 +31,41 @@ public class ClienteImplementacion implements ClienteService {
 
     @Override
     public Cliente guardarCliente(Cliente cliente) {
+        if (cliente.getContrasena() != null && !cliente.getContrasena().startsWith("$2a$")) {
+            String contrasenaHasheada = passwordEncoder.encode(cliente.getContrasena());
+            cliente.setContrasena(contrasenaHasheada);
+        }
         return repo.save(cliente);
     }
 
-    //para recuperar la contraseña
     @Override
     public Cliente getClienteByEmail(String email) {
-        List<Cliente> clientes = repo.findAll();
-        for (Cliente cliente : clientes) {
-            if (cliente.getEmail().equals(email)) {
-                return cliente;
-            }
-        }
-        return null;//si no ha devuelto el cliente que devuelva null
+        // ✅ CORREGIDO: Sin .orElse() porque no es Optional
+        return repo.findByEmail(email);
     }
 
     @Override
     public Cliente actualizarCliente(Long id, Cliente clienteConDatosNuevos) {
-        // 1. Buscamos el cliente real que tiene la contraseña guardada
         Cliente clienteEnBD = repo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
 
-        // 2. Solo actualizamos los campos que el usuario puede cambiar en el perfil
         clienteEnBD.setNombre(clienteConDatosNuevos.getNombre());
         clienteEnBD.setEmail(clienteConDatosNuevos.getEmail());
 
-        // Si la foto viene vacía, podrías mantener la anterior
         if (clienteConDatosNuevos.getFotoPerfil() != null) {
             clienteEnBD.setFotoPerfil(clienteConDatosNuevos.getFotoPerfil());
         }
+        
+        if (clienteConDatosNuevos.getContrasena() != null && 
+            !clienteConDatosNuevos.getContrasena().isEmpty()) {
+            if (!clienteConDatosNuevos.getContrasena().startsWith("$2a$")) {
+                String nuevaContrasenaHasheada = passwordEncoder.encode(clienteConDatosNuevos.getContrasena());
+                clienteEnBD.setContrasena(nuevaContrasenaHasheada);
+            } else {
+                clienteEnBD.setContrasena(clienteConDatosNuevos.getContrasena());
+            }
+        }
 
-        // 3. ¡NO TOCAMOS LA CONTRASEÑA! 
-        // clienteEnBD sigue teniendo su contraseña original intacta.
-        // 4. Guardamos el objeto que recuperamos de la BD con los campos cambiados
         return repo.save(clienteEnBD);
     }
 
@@ -69,26 +75,26 @@ public class ClienteImplementacion implements ClienteService {
     }
 
     @Override
-    public Cliente login(String email, String contrasena) {
-        List<Cliente> clientes = repo.findAll();
-        for (Cliente cliente : clientes) {
-            if (cliente.getEmail().equals(email) && cliente.getContrasena().equals(contrasena)) {
-                return cliente;
-            }
+    public Cliente login(String email, String contrasenaPlana) {
+        // ✅ CORREGIDO: Sin Optional
+        Cliente cliente = repo.findByEmail(email);
+        
+        if (cliente != null && passwordEncoder.matches(contrasenaPlana, cliente.getContrasena())) {
+            return cliente;
         }
-        return null;//si no ha devuelto el cliente que devuelva null
+        
+        return null;
     }
 
     @Override
-    public Cliente actualizarContrasena(Long id, String nuevaContrasena) {
+    public Cliente actualizarContrasena(Long id, String nuevaContrasenaPlana) {
         Cliente existingCliente = repo.findById(id).orElse(null);
         if (existingCliente != null) {
-            existingCliente.setContrasena(nuevaContrasena);
+            String contrasenaHasheada = passwordEncoder.encode(nuevaContrasenaPlana);
+            existingCliente.setContrasena(contrasenaHasheada);
             return repo.save(existingCliente);
-
         } else {
             return null;
         }
     }
-
 }

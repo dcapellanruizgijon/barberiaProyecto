@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.example.back.Barbero;
 
 public interface BarberoRepositorio extends JpaRepository<Barbero, Long>{
-    Optional<Barbero> findByEmail(String email);
+    Barbero findByEmail(String email);
 
     List<Barbero> findByBarberiaId(Long barberiaId);
 }
