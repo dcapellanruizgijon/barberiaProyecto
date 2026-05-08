@@ -19,6 +19,15 @@ public interface CitaRepositorio extends JpaRepository<Cita, Long> {
 
     List<Cita> findByClienteId(Long clienteId);
 
-@Query("SELECT c FROM Cita c JOIN FETCH c.servicioId JOIN FETCH c.cliente WHERE c.barberia.id = :barberiaId")
-List<Cita> findByBarberiaId(@Param("barberiaId") Long barberiaId);
+    @Query("SELECT c FROM Cita c JOIN FETCH c.servicioId JOIN FETCH c.cliente WHERE c.barberia.id = :barberiaId")
+    List<Cita> findByBarberiaId(@Param("barberiaId") Long barberiaId);
+
+// Cuenta las citas de hoy usando TU variable 'fechaHora'
+    @Query("SELECT COUNT(c) FROM Cita c WHERE c.barberia.id = :id AND c.fechaHora LIKE CONCAT(CURRENT_DATE, '%')")
+    long countCitasHoy(@Param("id") Long id);
+
+// Suma ingresos usando TU relación 'servicioId'
+    @Query("SELECT SUM(s.precio) FROM Cita c JOIN c.servicioId s WHERE c.barberia.id = :id AND c.fechaHora LIKE CONCAT(CURRENT_DATE, '%')")
+    Double sumIngresosHoy(@Param("id") Long id);
+
 }

@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.back.Barberia;
+import com.example.back.BarberiaStatsDTO;
+import com.example.back.repositorios.BarberoRepositorio;
+import com.example.back.repositorios.CitaRepositorio;
 import com.example.back.servicios.BarberiaService;
 
 @RestController
@@ -27,6 +30,12 @@ public class BarberiaController {
 
     @Autowired
     private BarberiaService barberiaService;
+
+    @Autowired
+    private CitaRepositorio citaRepository;
+
+    @Autowired
+    private BarberoRepositorio barberoRepository;
 
     // Obtener todas las barberías
     @GetMapping
@@ -119,6 +128,20 @@ public class BarberiaController {
         }
     }
 
+    @GetMapping("/{id}/stats")
+    public ResponseEntity<BarberiaStatsDTO> getStats(@PathVariable Long id) {
+        BarberiaStatsDTO stats = new BarberiaStatsDTO();
+
+        stats.setCitasHoy(citaRepository.countCitasHoy(id));
+
+        Double ingresos = citaRepository.sumIngresosHoy(id);
+        stats.setIngresosHoy(ingresos != null ? ingresos : 0.0);
+
+        stats.setBarberosActivos(barberoRepository.countByBarberiaId(id));
+        stats.setProximaCita("17:00"); // Esto podrías calcularlo buscando la cita más cercana
+
+        return ResponseEntity.ok(stats);
+    }
     // Endpoint preparado para cuando implementes la búsqueda por valoración media
     // @GetMapping("/valoracion")
     // public ResponseEntity<List<Barberia>> getBarberiasByValoracionMedia(@RequestParam Double valoracionMedia) {
