@@ -9,9 +9,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.back.Administrador;
 import com.example.back.Barberia;
 import com.example.back.Barbero;
+import com.example.back.LoginDTO;
 import com.example.back.SetupBarberiaDTO;
+import com.example.back.repositorios.AdministradorRepository;
 import com.example.back.servicios.BarberiaService;
 import com.example.back.servicios.BarberoService;
 
@@ -21,6 +24,9 @@ import jakarta.transaction.Transactional;
 @RequestMapping("/api/admin")
 @CrossOrigin(origins = "http://localhost:4200")
 public class AdminController {
+
+    @Autowired
+    private AdministradorRepository adminRepository;
 
     @Autowired
     private BarberiaService barberiaService;
@@ -64,5 +70,29 @@ public class AdminController {
         barberiaService.crearBarberia(nuevaBarberia);
 
         return ResponseEntity.ok("Barbería '" + nuevaBarberia.getNombre() + "' desplegada con éxito");
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginDTO dto) {
+        // 1. Buscar al administrador por email
+        return adminRepository.findByEmail(dto.getEmail())
+                .map(admin -> {
+                    // 2. Comprobar si la contraseña coincide con la encriptada
+                    if (passwordEncoder.matches(dto.getPassword(), admin.getPassword())) {
+                        // Login correcto (aquí podrías devolver un Token o el objeto admin)
+                        return ResponseEntity.ok(admin);
+                    } else {
+                        return ResponseEntity.status(401).body("Contraseña incorrecta");
+                    }
+                })
+                .orElse(ResponseEntity.status(404).body("Administrador no encontrado"));
+    }
+
+    @PostMapping("/crear-test")
+    public ResponseEntity<?> crearAdmin(@RequestBody Administrador admin) {
+        // Encriptamos la contraseña que envíes por Postman
+        admin.setPassword(passwordEncoder.encode(admin.getPassword()));
+        adminRepository.save(admin);
+        return ResponseEntity.ok("Admin creado con éxito");
     }
 }
