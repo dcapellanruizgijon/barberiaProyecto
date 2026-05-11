@@ -3,6 +3,7 @@ package com.example.back.controladores;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,12 +17,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.back.Incidencia;
 import com.example.back.repositorios.IncidenciaRepository;
+import com.example.back.servicios.IncidenciasService;
 
 @RestController
 @RequestMapping("/api/incidencias")
 @CrossOrigin(origins = "http://localhost:4200") // Para que Angular pueda conectar
 public class IncidenciasController {
 
+    @Autowired
+    private IncidenciasService incidenciasService;
     @Autowired
     private IncidenciaRepository incidenciaRepository;
 
@@ -36,8 +40,10 @@ public class IncidenciasController {
     // 2. GET: Para que el Admin vea todas las incidencias
     // URL: http://localhost:8080/api/incidencias
     @GetMapping
-    public List<Incidencia> listarTodas() {
-        return incidenciaRepository.findAll();
+    public ResponseEntity<List<Incidencia>> listarTodas() {
+        // El Service se encargará de pedirle al Repository las incidencias ordenadas
+        List<Incidencia> lista = incidenciasService.getIncidencias();
+        return ResponseEntity.ok(lista);
     }
 
     // 3. GET: Para filtrar por estado (ej: solo las PENDIENTES)
@@ -49,12 +55,18 @@ public class IncidenciasController {
 
     // 4. PUT: Para que el Admin cambie el estado (ej: de PENDIENTE a RESUELTA)
     // URL: http://localhost:8080/api/incidencias/5/estado?nuevoEstado=RESUELTA
-    @PutMapping("/{id}/estado")
-    public Incidencia cambiarEstado(@PathVariable Long id, @RequestParam String nuevoEstado) {
+    @PutMapping("/{id}/gestionar")
+    public Incidencia gestionarIncidencia(
+            @PathVariable Long id,
+            @RequestParam String nuevoEstado,
+            @RequestBody(required = false) String comentario) {
+
         Incidencia incidencia = incidenciaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Incidencia no encontrada"));
-        
+
         incidencia.setEstado(nuevoEstado);
+        incidencia.setComentarioAdmin(comentario);
+
         return incidenciaRepository.save(incidencia);
     }
 
@@ -63,4 +75,5 @@ public class IncidenciasController {
     public void borrar(@PathVariable Long id) {
         incidenciaRepository.deleteById(id);
     }
+
 }

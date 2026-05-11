@@ -34,4 +34,5 @@ public class Incidencia {
     private String tipoUsuario; // "BARBERO" o "CLIENTE"
 
     private LocalDateTime fechaCreacion = LocalDateTime.now();
+    private String comentarioAdmin;
 }

@@ -9,4 +9,6 @@ import com.example.back.Incidencia;
 public interface IncidenciaRepository extends JpaRepository<Incidencia, Long> {
 
     List<Incidencia> findByEstado(String estado);
+
+    List<Incidencia> findAllByOrderByIdDesc();
 }
