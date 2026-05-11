@@ -34,10 +34,33 @@ public class BarberiaImplementacion implements BarberiaService{
     public Barberia actualizarBarberia(Long id, Barberia barberia) {
         Barberia existingBarberia = repo.findById(id).orElse(null);
         if (existingBarberia != null) {
-            existingBarberia.setNombre(barberia.getNombre());
-            existingBarberia.setUbicacion(barberia.getUbicacion());
-            existingBarberia.setLocalidad(barberia.getLocalidad());
-            existingBarberia.setTelefono(barberia.getTelefono());
+            // Actualizar todos los campos
+            if (barberia.getNombre() != null) {
+                existingBarberia.setNombre(barberia.getNombre());
+            }
+            if (barberia.getUbicacion() != null) {
+                existingBarberia.setUbicacion(barberia.getUbicacion());
+            }
+            if (barberia.getLocalidad() != null) {
+                existingBarberia.setLocalidad(barberia.getLocalidad());
+            }
+            if (barberia.getTelefono() != null) {
+                existingBarberia.setTelefono(barberia.getTelefono());
+            }
+            // nuevos campos
+            if (barberia.getLatitud() != null) {
+                existingBarberia.setLatitud(barberia.getLatitud());
+            }
+            if (barberia.getLongitud() != null) {
+                existingBarberia.setLongitud(barberia.getLongitud());
+            }
+            if (barberia.getLogo() != null) {
+                existingBarberia.setLogo(barberia.getLogo());
+            }
+            if (barberia.getHeader() != null) {
+                existingBarberia.setHeader(barberia.getHeader());
+            }
+            
             return repo.save(existingBarberia);
         } else {
             return null;
@@ -49,29 +72,8 @@ public class BarberiaImplementacion implements BarberiaService{
         repo.deleteById(id);    
     }
 
-    // @Override
-    // public List<Barberia> getBarberiaByNombre(String nombre) {
-    //     List<Barberia> barberias = repo.findAll();
-    //     return barberias.stream()
-    //             .filter(b -> b.getNombre().toLowerCase().contains(nombre.toLowerCase()))
-    //             .toList();
-    // }
-@Override
-public List<Barberia> getBarberiaByNombre(String termino) {
-    // La base de datos se encarga de mirar en AMBAS columnas
-    // gracias al OR que pusimos en el Repository.
-    return repo.buscarPorNombreOLocalidad(termino);
-}
-    // Para cuando tengamos el servicio de la clase Resenas
-    // @Override
-    // public List<Barberia> getBarberiasByValoracionMedia(Double valoracionMedia) {
-    //     List<Barberia> barberias = repo.findAll();
-    //     return barberias.stream()
-    //             .filter(b -> b.getValoracionMedia() != null && b.getValoracionMedia() >= valoracionMedia)
-    //             .toList();  
-    // }
-
-    
-
-    
+    @Override
+    public List<Barberia> getBarberiaByNombre(String termino) {
+        return repo.buscarPorNombreOLocalidad(termino);
+    }
 }
