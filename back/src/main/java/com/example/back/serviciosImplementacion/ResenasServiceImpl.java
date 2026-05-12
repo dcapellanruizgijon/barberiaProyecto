@@ -32,9 +32,19 @@ public class ResenasServiceImpl implements ResenasService {
         return repository.save(resena);
     }
 
-    // @Override
-    // public Resenas guardar(Resenas resena) {
-    //     // TODO Auto-generated method stub
-    //     throw new UnsupportedOperationException("Unimplemented method 'guardar'");
-    // }
+
+    // ResenasService.java - Añade este método
+public Resenas actualizar(Long id, Resenas resenaActualizada) {
+    return repository.findById(id).map(resena -> {
+        resena.setPuntuacion(resenaActualizada.getPuntuacion());
+        resena.setComentario(resenaActualizada.getComentario());
+        return repository.save(resena);
+    }).orElseThrow(() -> new RuntimeException("Reseña no encontrada"));
+}
+
+@Override
+// ResenasService.java
+public void eliminar(Long id) {
+    repository.deleteById(id);
+}
 }
