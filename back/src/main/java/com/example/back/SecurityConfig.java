@@ -24,6 +24,7 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
                 // .requestMatchers("/api/admin/**").hasRole("ADMIN") // O .permitAll() mientras pruebas
+                
                 .requestMatchers("/api/admin/**").permitAll()
                 .requestMatchers("/api/incidencias/**").permitAll()
                 .requestMatchers("/api/citas/**").permitAll()

@@ -17,6 +17,21 @@ public class IncidenciasService {
     public List<Incidencia> getIncidencias() {
         return incidenciaRepository.findAllByOrderByIdDesc();
     }
-    
+
+    /**
+     * NUEVO: Para el Barbero: Ver solo sus propias incidencias. Importante: El
+     * repositorio debe tener el método findByUsuarioId.
+     */
+    public List<Incidencia> getMisIncidencias(Long id, String tipoUsuario) {
+        // IMPORTANTE: Pasamos los dos parámetros al repositorio
+        return incidenciaRepository.findByCreadorIdAndTipoUsuario(id, tipoUsuario);
+    }
+
+    /**
+     * Método para guardar o actualizar incidencias
+     */
+    public Incidencia guardar(Incidencia incidencia) {
+        return incidenciaRepository.save(incidencia);
+    }
 
 }

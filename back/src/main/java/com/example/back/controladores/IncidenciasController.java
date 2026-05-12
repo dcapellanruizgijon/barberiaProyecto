@@ -31,10 +31,15 @@ public class IncidenciasController {
 
     // 1. POST: Para que cualquier usuario reporte un bug
     // URL: http://localhost:8080/api/incidencias
-    @PostMapping
+    @PostMapping("/crear") // <--- Ahora sí aceptará la ruta /api/incidencias/crear
     public Incidencia crearIncidencia(@RequestBody Incidencia incidencia) {
-        // Al crearla, el estado por defecto ya es "PENDIENTE" en la entidad
         return incidenciaRepository.save(incidencia);
+    }
+
+    @GetMapping("/usuario/{id}/{tipo}")
+    public List<Incidencia> listarPorUsuario(@PathVariable Long id, @PathVariable String tipo) {
+        // Aquí es donde llamamos al service corregido arriba
+        return incidenciasService.getMisIncidencias(id, tipo);
     }
 
     // 2. GET: Para que el Admin vea todas las incidencias
