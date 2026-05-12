@@ -30,6 +30,7 @@ public class Incidencia {
     private String prioridad = "MEDIA";
 
     // Para saber quién la mandó
+    @Column(name = "creador_id")
     private Long creadorId; 
     private String tipoUsuario; // "BARBERO" o "CLIENTE"
 
