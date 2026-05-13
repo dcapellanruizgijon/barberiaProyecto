@@ -1,5 +1,12 @@
 package com.example.back;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 public class BarberiaStatsDTO {
 
     private long citasHoy;
