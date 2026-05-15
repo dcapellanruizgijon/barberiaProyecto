@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.back.Barbero;
@@ -61,14 +60,24 @@ public class BarberoController {
     //IMPORTANTE RESCATARLO CON REQUEST BODY Y UN MAP PARA OBTENER LOS DATOS DE EMAIL Y CONTRASEÑA QUE VIENEN EN EL CUERPO DE LA PETICION (POST)
     @PostMapping("/login")
     public ResponseEntity<Barbero> login(@RequestBody Map<String, String> credentials) {
-    String email = credentials.get("email");
-    String contrasena = credentials.get("contrasena");
-    
-    Barbero barbero = service.login(email, contrasena);
-    if (barbero != null) {
-        return ResponseEntity.ok(barbero);
-    } else {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        String email = credentials.get("email");
+        String contrasena = credentials.get("contrasena");
+
+        Barbero barbero = service.login(email, contrasena);
+        if (barbero != null) {
+            return ResponseEntity.ok(barbero);
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
     }
-}
+
+    @GetMapping("/{id}/email")
+    public ResponseEntity<String> getEmailBarbero(@PathVariable Long id) {
+        Barbero barbero = service.obtenerPorId(id);
+        if (barbero != null) {
+            return ResponseEntity.ok(barbero.getEmail());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }

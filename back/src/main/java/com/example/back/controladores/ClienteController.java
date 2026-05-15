@@ -80,17 +80,17 @@ public class ClienteController {
 
     // Login de cliente
     // En ClienteController.java - Cambia el login a @RequestBody
-@PostMapping("/login")
-public ResponseEntity<Cliente> login(@RequestBody Map<String, String> credentials) {
-    String email = credentials.get("email");
-    String contrasena = credentials.get("contrasena");
-    Cliente cliente = clienteService.login(email, contrasena);
-    if (cliente != null) {
-        return ResponseEntity.ok(cliente);
-    } else {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    @PostMapping("/login")
+    public ResponseEntity<Cliente> login(@RequestBody Map<String, String> credentials) {
+        String email = credentials.get("email");
+        String contrasena = credentials.get("contrasena");
+        Cliente cliente = clienteService.login(email, contrasena);
+        if (cliente != null) {
+            return ResponseEntity.ok(cliente);
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
     }
-}
 
     // Obtener cliente por email (para recuperar contraseña)
     @GetMapping("/email/{email}")
@@ -98,6 +98,16 @@ public ResponseEntity<Cliente> login(@RequestBody Map<String, String> credential
         Cliente cliente = clienteService.getClienteByEmail(email);
         if (cliente != null) {
             return ResponseEntity.ok(cliente);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/{id}/email")
+    public ResponseEntity<String> getEmailCliente(@PathVariable Long id) {
+        Cliente cliente = clienteService.getClienteById(id);
+        if (cliente != null) {
+            return ResponseEntity.ok(cliente.getEmail());
         } else {
             return ResponseEntity.notFound().build();
         }

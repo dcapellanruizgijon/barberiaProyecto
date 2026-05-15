@@ -42,6 +42,7 @@ public class EmailController {
         return ResponseEntity.badRequest().body("Usuario no encontrado.");
     }
 
+  
     @PostMapping("/confirmar-cita")
     public ResponseEntity<String> confirmarCita(@RequestBody Map<String, String> infoCita) {
         // Extraemos los datos que vienen del Front o del Service
