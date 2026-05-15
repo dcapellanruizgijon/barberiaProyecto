@@ -30,9 +30,9 @@ public class EmailService {
 
     @Async
     public void enviarEmailIncidenciaResuelta(String destino, String nombreUsuario, String titulo, String comentario) {
-        String contenido = "Nuestro equipo de soporte ha revisado tu reporte: <strong>" + titulo + "</strong>.<br><br>"
-                + "<strong>Resolución:</strong> " + comentario + "<br><br>"
-                + "Gracias por ayudarnos a mejorar MasterCuts.";
+        String contenido = "Nuestro equipo de soporte ha revisado tu reporte.<br><br>"
+                + "<strong>Para ver la resolucion de su incidencia entra en la aplicacion.</strong><br><br>"
+                + "Gracias por ayudarnos a mejorar MasterCuts. <br> Un cordial saludo.";
         llamarApiBrevo(destino, nombreUsuario, "Incidencia Resuelta - MasterCuts", contenido, "Ver mis reportes");
     }
 
