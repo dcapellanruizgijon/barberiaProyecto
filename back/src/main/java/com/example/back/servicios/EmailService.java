@@ -25,7 +25,7 @@ public class EmailService {
     @Async
     public void enviarEmailBienvenida(String destino, String nombreUsuario) {
         String contenido = "¡Gracias por registrarte en <strong>MasterCuts</strong>! Estamos encantados de tenerte con nosotros. Ya puedes empezar a reservar tus citas con nuestros barberos profesionales.";
-        llamarApiBrevo(destino, nombreUsuario, "¡Bienvenido a MasterCuts!", contenido, "Ir a mi cuenta");
+        llamarApiBrevo(destino, nombreUsuario, "¡Bienvenido a MasterCuts!", contenido, "Ir a mi cuenta",null);
     }
 
     @Async
@@ -33,7 +33,7 @@ public class EmailService {
         String contenido = "Nuestro equipo de soporte ha revisado tu reporte.<br><br>"
                 + "<strong>Para ver la resolucion de su incidencia entra en la aplicacion.</strong><br><br>"
                 + "Gracias por ayudarnos a mejorar MasterCuts. <br> Un cordial saludo.";
-        llamarApiBrevo(destino, nombreUsuario, "Incidencia Resuelta - MasterCuts", contenido, "Ver mis reportes");
+        llamarApiBrevo(destino, nombreUsuario, "Incidencia Resuelta - MasterCuts", contenido, "Ver mis reportes",null);
     }
 
     // 2. Email Confirmación de Cita
@@ -44,24 +44,28 @@ public class EmailService {
                 + "<strong>Fecha:</strong> " + fecha + "<br>"
                 + "<strong>Hora:</strong> " + hora + "<br><br>"
                 + "¡Te esperamos para darte el mejor servicio!";
-        llamarApiBrevo(destino, nombreUsuario, "Confirmación de Cita - MasterCuts", contenido, "Ver mis citas");
+        llamarApiBrevo(destino, nombreUsuario, "Confirmación de Cita - MasterCuts", contenido, "Ver mis citas",null);
     }
 
     // 3. Email Recuperar Contraseña
     @Async
     public void enviarEmailRecuperacion(String destino, String nombreUsuario, String enlaceRecuperacion) {
         String contenido = "Has solicitado restablecer tu contraseña. Haz clic en el botón de abajo para crear una nueva. Si no has sido tú, ignora este mensaje.";
-        llamarApiBrevo(destino, nombreUsuario, "Recuperación de Contraseña", contenido, "Restablecer Contraseña");
+        // CAMBIO: Ahora pasamos 'enlaceRecuperacion' en lugar de dejarlo fijo
+        llamarApiBrevo(destino, nombreUsuario, "Recuperación de Contraseña", contenido, "Restablecer Contraseña", enlaceRecuperacion);
     }
 
-    private void llamarApiBrevo(String destino, String nombreDestino, String asunto, String contenido, String textoBoton) {
+    private void llamarApiBrevo(String destino, String nombreDestino, String asunto, String contenido, String textoBoton, String urlBoton) {
         RestTemplate restTemplate = new RestTemplate();
+
+        // Si urlBoton es nulo (para otros correos), mandamos a la home
+        String href = (urlBoton != null) ? urlBoton : "http://localhost:4200";
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("api-key", apiKey);
 
-        // --- DISEÑO SUPREME (Negro y Dorado) ---
+        // --- DISEÑO SUPREME ACTUALIZADO ---
         String htmlLayout
                 = "<html><body style='font-family: Arial, sans-serif; background-color: #1a1a1a; padding: 20px; color: #ffffff;'>"
                 + "  <div style='max-width: 600px; margin: auto; background: #262626; padding: 30px; border-radius: 15px; border: 1px solid #d4af37;'>"
@@ -70,7 +74,8 @@ public class EmailService {
                 + "    <p style='font-size: 16px; color: #ffffff;'>Hola <strong>" + nombreDestino + "</strong>,</p>"
                 + "    <p style='font-size: 16px; color: #cccccc; line-height: 1.6;'>" + contenido + "</p>"
                 + "    <div style='text-align: center; margin-top: 35px;'>"
-                + "      <a href='http://localhost:4200' style='background-color: #d4af37; color: #1a1a1a; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block;'>" + textoBoton + "</a>"
+                // CAMBIO AQUÍ: Usamos la variable 'href' dinámica
+                + "      <a href='" + href + "' style='background-color: #d4af37; color: #1a1a1a; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block;'>" + textoBoton + "</a>"
                 + "    </div>"
                 + "    <p style='margin-top: 45px; font-size: 11px; color: #777777; text-align: center;'>Estilo y elegancia en cada corte.<br>Este es un mensaje automático, por favor no respondas.</p>"
                 + "  </div>"
