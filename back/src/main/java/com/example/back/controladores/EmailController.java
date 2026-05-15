@@ -42,7 +42,6 @@ public class EmailController {
         return ResponseEntity.badRequest().body("Usuario no encontrado.");
     }
 
-  
     @PostMapping("/confirmar-cita")
     public ResponseEntity<String> confirmarCita(@RequestBody Map<String, String> infoCita) {
         // Extraemos los datos que vienen del Front o del Service
@@ -72,29 +71,22 @@ public class EmailController {
     public ResponseEntity<String> solicitarRecuperacion(@RequestParam String email) {
         String nombreUsuario = null;
 
-        // 1. Buscamos al cliente. Si no existe, findByEmail devuelve null.
         Cliente cliente = clienteRepository.findByEmail(email);
-
         if (cliente != null) {
             nombreUsuario = cliente.getNombre();
         } else {
-            // 2. Si no es cliente, buscamos si es barbero.
             Barbero barbero = barberoRepository.findByEmail(email);
             if (barbero != null) {
                 nombreUsuario = barbero.getNombre();
             }
         }
 
-        // 3. Si encontramos a alguien (sea quien sea), mandamos el mail
         if (nombreUsuario != null) {
-            String token = java.util.UUID.randomUUID().toString();
-            // Este enlace es el que llegará al botón dorado del email
-            String enlace = "http://localhost:4200/reset-password?token=" + token;
-
+            // CAMBIO: Enviamos el email en la URL para que el Front lo reconozca
+            String enlace = "http://localhost:4200/reset-password?email=" + email;
             emailService.enviarEmailRecuperacion(email, nombreUsuario, enlace);
         }
 
-        // Siempre devolvemos 200 OK por seguridad
         return ResponseEntity.ok("Si el correo electrónico está registrado, recibirás un enlace pronto.");
     }
 
