@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -23,15 +24,19 @@ public class SecurityConfig {
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                // .requestMatchers("/api/admin/**").hasRole("ADMIN") // O .permitAll() mientras pruebas
+                // 🔥 PERMITIR MÉTODO DELETE EXPLÍCITAMENTE
+                .requestMatchers(HttpMethod.DELETE, "/api/barberias/**").permitAll()
+                .requestMatchers(HttpMethod.DELETE, "/api/**").permitAll()
+                
+                // Tus reglas existentes
                 .requestMatchers("/api/email/**").permitAll()
                 .requestMatchers("/api/admin/**").permitAll()
                 .requestMatchers("/api/incidencias/**").permitAll()
                 .requestMatchers("/api/citas/**").permitAll()
                 .requestMatchers("/api/imagenes/**", "/api/clientes/**", "/api/barberias/**", "/api/barberos/**", "/api/resenas/**").permitAll()
                 .requestMatchers("/api/servicios/**", "/fotos/**", "/api/barberos/login/**", "/api/clientes/login/**").permitAll()
-                .requestMatchers("/api/servicios/**", "/fotos/**", "/api/barberos/login/**", "/api/clientes/login/**").permitAll()
-                .requestMatchers("/api/horarios/**", "/api/disponibilidad/**").permitAll() 
+                .requestMatchers("/api/horarios/**", "/api/disponibilidad/**").permitAll()
+                
                 .anyRequest().authenticated()
             )
             .httpBasic(basic -> basic.disable())
@@ -41,10 +46,9 @@ public class SecurityConfig {
         return http.build();
     }
     
-    // Bean para el PasswordEncoder
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(10); // strength=10 es el valor recomendado
+        return new BCryptPasswordEncoder(10);
     }
     
     @Bean
