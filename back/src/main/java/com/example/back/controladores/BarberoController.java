@@ -79,5 +79,5 @@ public class BarberoController {
         } else {
             return ResponseEntity.notFound().build();
         }
-    }
+    } 
 }
