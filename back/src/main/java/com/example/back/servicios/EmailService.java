@@ -25,7 +25,7 @@ public class EmailService {
     @Async
     public void enviarEmailBienvenida(String destino, String nombreUsuario) {
         String contenido = "¡Gracias por registrarte en <strong>MasterCuts</strong>! Estamos encantados de tenerte con nosotros. Ya puedes empezar a reservar tus citas con nuestros barberos profesionales.";
-        llamarApiBrevo(destino, nombreUsuario, "¡Bienvenido a MasterCuts!", contenido, "Ir a mi cuenta",null);
+        llamarApiBrevo(destino, nombreUsuario, "¡Bienvenido a MasterCuts!", contenido, "Ir a mi cuenta", null);
     }
 
     @Async
@@ -33,7 +33,7 @@ public class EmailService {
         String contenido = "Nuestro equipo de soporte ha revisado tu reporte.<br><br>"
                 + "<strong>Para ver la resolucion de su incidencia entra en la aplicacion.</strong><br><br>"
                 + "Gracias por ayudarnos a mejorar MasterCuts. <br> Un cordial saludo.";
-        llamarApiBrevo(destino, nombreUsuario, "Incidencia Resuelta - MasterCuts", contenido, "Ver mis reportes",null);
+        llamarApiBrevo(destino, nombreUsuario, "Incidencia Resuelta - MasterCuts", contenido, "Ver mis reportes", null);
     }
 
     // 2. Email Confirmación de Cita
@@ -44,7 +44,7 @@ public class EmailService {
                 + "<strong>Fecha:</strong> " + fecha + "<br>"
                 + "<strong>Hora:</strong> " + hora + "<br><br>"
                 + "¡Te esperamos para darte el mejor servicio!";
-        llamarApiBrevo(destino, nombreUsuario, "Confirmación de Cita - MasterCuts", contenido, "Ver mis citas",null);
+        llamarApiBrevo(destino, nombreUsuario, "Confirmación de Cita - MasterCuts", contenido, "Ver mis citas", null);
     }
 
     // 3. Email Recuperar Contraseña
@@ -53,6 +53,24 @@ public class EmailService {
         String contenido = "Has solicitado restablecer tu contraseña. Haz clic en el botón de abajo para crear una nueva. Si no has sido tú, ignora este mensaje.";
         // CAMBIO: Ahora pasamos 'enlaceRecuperacion' en lugar de dejarlo fijo
         llamarApiBrevo(destino, nombreUsuario, "Recuperación de Contraseña", contenido, "Restablecer Contraseña", enlaceRecuperacion);
+    }
+
+    @Async
+    public void enviarNotificacionNuevaBarberia(String nombreB, String ubicacion, String localidad, String telf, String responsable, String emailJefe) {
+        String destinoAdmin = "david.yerpes-gordillo@iesruizgijon.com"; // <-- Pon AQUÍ el correo donde quieres recibir los avisos
+        String asunto = "NUEVA SOLICITUD DE ALTA: " + nombreB;
+
+        String contenido = "<h3>Nueva solicitud de colaboración</h3>"
+                + "<p><strong>Barbería:</strong> " + nombreB + "</p>"
+                + "<p><strong>Ubicación:</strong> " + ubicacion + " (" + localidad + ")</p>"
+                + "<p><strong>Teléfono:</strong> " + telf + "</p>"
+                + "<hr>"
+                + "<p><strong>Responsable:</strong> " + responsable + "</p>"
+                + "<p><strong>Email de contacto:</strong> " + emailJefe + "</p>"
+                + "<p>Revisa los datos para proceder con el alta en el sistema.</p>";
+
+        // Reutilizamos tu método privado enviando 'null' en el enlace de botón ya que es un aviso interno
+        llamarApiBrevo(destinoAdmin, "Administrador MasterCuts", asunto, contenido, "Ver Dashboard", null);
     }
 
     private void llamarApiBrevo(String destino, String nombreDestino, String asunto, String contenido, String textoBoton, String urlBoton) {

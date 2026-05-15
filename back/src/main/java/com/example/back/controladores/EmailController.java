@@ -90,4 +90,16 @@ public class EmailController {
         return ResponseEntity.ok("Si el correo electrónico está registrado, recibirás un enlace pronto.");
     }
 
+    @PostMapping("/solicitar-barberia")
+    public ResponseEntity<String> solicitarBarberia(@RequestBody Map<String, String> datos) {
+        emailService.enviarNotificacionNuevaBarberia(
+                datos.get("nombre"),
+                datos.get("ubicacion"),
+                datos.get("localidad"),
+                datos.get("telefono"),
+                datos.get("responsable"),
+                datos.get("email")
+        );
+        return ResponseEntity.ok("Solicitud enviada al administrador.");
+    }
 }
