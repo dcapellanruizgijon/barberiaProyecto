@@ -1,5 +1,6 @@
 package com.example.back;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -14,16 +15,16 @@ public class BreakBarberia {
 
     @ManyToOne
     @JoinColumn(name = "barberia_id", nullable = false)
+    @JsonIgnoreProperties({"breaks", "barberos", "servicios", "resenas", "hibernateLazyInitializer"})
     private Barberia barberia;
 
-    // null = aplica a todos los días, o un día específico (0=Lun...6=Dom)
     private Integer diaSemana;
 
     @Column(nullable = false)
-    private String horaInicio; // "14:00"
+    private String horaInicio;
 
     @Column(nullable = false)
-    private String horaFin;    // "16:00"
+    private String horaFin;
 
-    private String descripcion; // "Comida"
+    private String descripcion;
 }
