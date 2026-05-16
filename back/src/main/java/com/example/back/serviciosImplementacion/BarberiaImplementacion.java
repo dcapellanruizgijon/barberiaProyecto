@@ -1,5 +1,6 @@
 package com.example.back.serviciosImplementacion;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,5 +76,25 @@ public class BarberiaImplementacion implements BarberiaService{
     @Override
     public List<Barberia> getBarberiaByNombre(String termino) {
         return repo.buscarPorNombreOLocalidad(termino);
+    }
+
+    @Override
+    public Barberia actualizarEstado(Long id, boolean activa) {
+        Barberia barberia = repo.findById(id).orElse(null);
+        if (barberia != null) {
+            barberia.setActiva(activa); // Cambiamos true/false
+            return repo.save(barberia); // Guardamos en la BD
+        }
+        return null;
+    }
+
+    @Override
+    public Barberia actualizarFechaRenovacion(Long id, LocalDate nuevaFecha) {
+        Barberia barberia = repo.findById(id).orElse(null);
+        if (barberia != null) {
+            barberia.setFechaRenovacion(nuevaFecha); // Asignamos la nueva fecha calculada
+            return repo.save(barberia); // Guardamos en la BD
+        }
+        return null;
     }
 }

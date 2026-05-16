@@ -1,5 +1,7 @@
 package com.example.back;
 
+import java.time.LocalDate;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,6 +17,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "barberias")
 public class Barberia {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,5 +31,7 @@ public class Barberia {
     private String header;
     private Double latitud;
     private Double longitud;
-
+    private LocalDate fechaAlta;
+    private LocalDate fechaRenovacion;
+    private boolean activa;
 }

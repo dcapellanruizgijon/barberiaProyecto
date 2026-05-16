@@ -1,5 +1,6 @@
 package com.example.back.controladores;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,66 +74,65 @@ public class BarberiaController {
         return ResponseEntity.status(HttpStatus.CREATED).body(nuevaBarberia);
     }
 
-
     // Actualizar barbería completa
-@PutMapping("/{id}")
-public ResponseEntity<Barberia> actualizarBarberia(@PathVariable Long id, @RequestBody Barberia barberia) {
-    Barberia barberiaActualizada = barberiaService.actualizarBarberia(id, barberia);
-    if (barberiaActualizada != null) {
+    @PutMapping("/{id}")
+    public ResponseEntity<Barberia> actualizarBarberia(@PathVariable Long id, @RequestBody Barberia barberia) {
+        Barberia barberiaActualizada = barberiaService.actualizarBarberia(id, barberia);
+        if (barberiaActualizada != null) {
+            return ResponseEntity.ok(barberiaActualizada);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    // Actualizar barbería parcialmente 
+    // Actualizar barbería parcialmente 
+    @PatchMapping("/{id}")
+    public ResponseEntity<Barberia> actualizarBarberiaParcial(@PathVariable Long id, @RequestBody Barberia barberia) {
+        System.out.println("=== PATCH RECIBIDO ===");
+        System.out.println("ID: " + id);
+        System.out.println("Logo recibido: " + barberia.getLogo());
+        System.out.println("Header recibido: " + barberia.getHeader());
+        System.out.println("Nombre recibido: " + barberia.getNombre());
+
+        Barberia existingBarberia = barberiaService.getBarberiaById(id);
+        if (existingBarberia == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        if (barberia.getNombre() != null) {
+            existingBarberia.setNombre(barberia.getNombre());
+        }
+        if (barberia.getUbicacion() != null) {
+            existingBarberia.setUbicacion(barberia.getUbicacion());
+        }
+        if (barberia.getLocalidad() != null) {
+            existingBarberia.setLocalidad(barberia.getLocalidad());
+        }
+        if (barberia.getTelefono() != null) {
+            existingBarberia.setTelefono(barberia.getTelefono());
+        }
+        if (barberia.getLatitud() != null) {
+            existingBarberia.setLatitud(barberia.getLatitud());
+        }
+        if (barberia.getLongitud() != null) {
+            existingBarberia.setLongitud(barberia.getLongitud());
+        }
+        if (barberia.getLogo() != null) {
+            System.out.println("Actualizando LOGO a: " + barberia.getLogo());
+            existingBarberia.setLogo(barberia.getLogo());
+        }
+        if (barberia.getHeader() != null) {
+            System.out.println("Actualizando HEADER a: " + barberia.getHeader());
+            existingBarberia.setHeader(barberia.getHeader());
+        }
+
+        Barberia barberiaActualizada = barberiaService.actualizarBarberia(id, existingBarberia);
+        System.out.println("Barbería actualizada - Logo: " + barberiaActualizada.getLogo());
+        System.out.println("Barbería actualizada - Header: " + barberiaActualizada.getHeader());
+
         return ResponseEntity.ok(barberiaActualizada);
-    } else {
-        return ResponseEntity.notFound().build();
     }
-}
-
-    // Actualizar barbería parcialmente 
-    // Actualizar barbería parcialmente 
-@PatchMapping("/{id}")
-public ResponseEntity<Barberia> actualizarBarberiaParcial(@PathVariable Long id, @RequestBody Barberia barberia) {
-    System.out.println("=== PATCH RECIBIDO ===");
-    System.out.println("ID: " + id);
-    System.out.println("Logo recibido: " + barberia.getLogo());
-    System.out.println("Header recibido: " + barberia.getHeader());
-    System.out.println("Nombre recibido: " + barberia.getNombre());
-    
-    Barberia existingBarberia = barberiaService.getBarberiaById(id);
-    if (existingBarberia == null) {
-        return ResponseEntity.notFound().build();
-    }
-
-    if (barberia.getNombre() != null) {
-        existingBarberia.setNombre(barberia.getNombre());
-    }
-    if (barberia.getUbicacion() != null) {
-        existingBarberia.setUbicacion(barberia.getUbicacion());
-    }
-    if (barberia.getLocalidad() != null) {
-        existingBarberia.setLocalidad(barberia.getLocalidad());
-    }
-    if (barberia.getTelefono() != null) {
-        existingBarberia.setTelefono(barberia.getTelefono());
-    }
-    if (barberia.getLatitud() != null) {
-        existingBarberia.setLatitud(barberia.getLatitud());
-    }
-    if (barberia.getLongitud() != null) {
-        existingBarberia.setLongitud(barberia.getLongitud());
-    }
-    if (barberia.getLogo() != null) {
-        System.out.println("Actualizando LOGO a: " + barberia.getLogo());
-        existingBarberia.setLogo(barberia.getLogo());
-    }
-    if (barberia.getHeader() != null) {
-        System.out.println("Actualizando HEADER a: " + barberia.getHeader());
-        existingBarberia.setHeader(barberia.getHeader());
-    }
-    
-    Barberia barberiaActualizada = barberiaService.actualizarBarberia(id, existingBarberia);
-    System.out.println("Barbería actualizada - Logo: " + barberiaActualizada.getLogo());
-    System.out.println("Barbería actualizada - Header: " + barberiaActualizada.getHeader());
-    
-    return ResponseEntity.ok(barberiaActualizada);
-}
 
     // Eliminar barbería
     @DeleteMapping("/{id}")
@@ -160,6 +160,29 @@ public ResponseEntity<Barberia> actualizarBarberiaParcial(@PathVariable Long id,
 
         return ResponseEntity.ok(stats);
     }
+
+// 1. Endpoint para Suspender o Activar
+    @PatchMapping("/{id}/estado")
+    public ResponseEntity<Barberia> cambiarEstado(@PathVariable Long id, @RequestParam boolean activa) {
+        Barberia actualizada = barberiaService.actualizarEstado(id, activa);
+        if (actualizada != null) {
+            return ResponseEntity.ok(actualizada);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    // 2. Endpoint para Renovar la fecha
+    @PatchMapping("/{id}/renovar")
+    public ResponseEntity<Barberia> renovarSuscripcion(@PathVariable Long id, @RequestParam String fecha) {
+        // Convertimos el String "yyyy-MM-dd" que viene de Angular a LocalDate de Java
+        LocalDate nuevaFecha = LocalDate.parse(fecha);
+        Barberia actualizada = barberiaService.actualizarFechaRenovacion(id, nuevaFecha);
+        if (actualizada != null) {
+            return ResponseEntity.ok(actualizada);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
     // Endpoint preparado para cuando implementes la búsqueda por valoración media
     // @GetMapping("/valoracion")
     // public ResponseEntity<List<Barberia>> getBarberiasByValoracionMedia(@RequestParam Double valoracionMedia) {
