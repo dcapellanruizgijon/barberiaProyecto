@@ -33,5 +33,5 @@ public class Barberia {
     private Double longitud;
     private LocalDate fechaAlta;
     private LocalDate fechaRenovacion;
-    private boolean activa;
+    private Boolean activa;
 }
